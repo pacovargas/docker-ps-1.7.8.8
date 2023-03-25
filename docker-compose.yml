@@ -1,0 +1,32 @@
+version: '3'
+services:
+  php:
+    build: .
+    image: php:7.4.33-apache
+    container_name: presta-1.7.8.8
+    expose:
+      - 80
+    ports:
+      - 80:80
+    restart: always
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - prestashop-1.7.8.8-net
+    links:
+      - mysql
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-presta-1.7.8.8
+    ports:
+      - "3306:3306"
+    networks:
+      - prestashop-1.7.8.8-net
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+networks: 
+  prestashop-1.7.8.8-net:
+    driver: bridge
